@@ -51,16 +51,16 @@ const cardNumberPattern = {
     {
       mask: "0000 0000 0000 0000",
       regex: /^4\d{0,15}/,
-      cardtype: "visa",
+      cardFlag: "visa",
     },
     {
       mask: "0000 0000 0000 0000",
       regex: /(^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}/,
-      cardType: "mastercard",
+      cardFlag: "mastercard",
     },
     {
       mask: "0000 0000 0000 0000",
-      cardtype: "default",
+      cardFlag: "default",
     },
   ],
   dispatch: function (appended, dynamicMasked) {
@@ -72,3 +72,39 @@ const cardNumberPattern = {
   },
 }
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern)
+
+const addButton = document.querySelector("#add-card")
+addButton.addEventListener("click", (e)=>{
+  e.preventDefault()
+  alert("Cartão adicionado")
+})
+
+const cardHolder = document.querySelector("#card-holder")
+cardHolder.addEventListener("input", ()=>{
+  const ccHolder = document.querySelector(".cc-holder .value")
+  ccHolder.innerText =
+    cardHolder.value.length > 0 ? cardHolder.value : "FULANO DA SILVA"
+})
+
+cvcMasked.on("accept", ()=>{
+  const ccSecurity = document.querySelector(".cc-security .value")
+  ccSecurity.innerText = cvcMasked.value.length > 0 ? cvcMasked.value : "123" 
+})
+
+cardNumberMasked.on("accept", () => {
+  const cardFlag = cardNumberMasked.masked.currentMask.cardFlag
+  setCardFlag(cardFlag)
+  const cardNumberValido = document.querySelector(".cc-number")
+  cardNumberValido.innerText = cardNumberMasked.value.length > 0 ? cardNumberMasked.value : "1234 5678 9012 3456"
+
+})
+
+expDateMasked.on("accept", () => {
+  const exDate = document.querySelector(".cc-extra .value")
+  exDate.innerText = expDateMasked.value.length > 0 ? expDateMasked.value : "02/32"
+})
+
+
+
+
+
